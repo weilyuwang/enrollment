@@ -12,6 +12,7 @@ mccabe==0.6.1
 mongoengine==0.19.1
 pylint==2.4.4
 pymongo==3.10.1
+python-dotenv==0.11.0
 six==1.14.0
 typed-ast==1.4.1
 virtualenv==16.7.9
