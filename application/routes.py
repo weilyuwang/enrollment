@@ -22,6 +22,7 @@ def index():
 def login():
     form = LoginForm()
     if form.validate_on_submit():
+        print("form.validate_on_submit is TRUE!")
         if request.form.get("email") == "test@uta.com":
             flash("You are successfully logged in!", "success")
             return redirect("/index")
