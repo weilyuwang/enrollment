@@ -25,11 +25,11 @@
 
                 {% for class in classes %}
                 <tr>
-                    <td scope='row'>{{ class["course_id"] }}</td>
-                    <td>{{ class["title"] }}</td>
-                    <td>{{ class["description"] }}</td>
-                    <td>{{ class["credits"] }}</td>
-                    <td>{{ class["term"] }}</td>                        
+                    <td scope='row'>{{ class.r2["course_id"] }}</td>
+                    <td>{{ class.r2["title"] }}</td>
+                    <td>{{ class.r2["description"] }}</td>
+                    <td>{{ class.r2["credits"] }}</td>
+                    <td>{{ class.r2["term"] }}</td>                        
                 </tr>
                 {% endfor %}
                 

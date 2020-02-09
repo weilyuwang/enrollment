@@ -70,6 +70,7 @@ def register():
 def enrollment():
     course_id = request.form.get('course_id')
     course_title = request.form.get('title')
+    term = request.form.get('term')
     
     user_id = 1
 
@@ -122,8 +123,6 @@ def enrollment():
                 }
             }
         ]))
-
-    term = request.form.get('term')
 
     return render_template("enrollment.html", enrollment=True, title="Enrollment", classes=classes)
 
