@@ -70,13 +70,19 @@ def register():
 def enrollment():
     course_id = request.form.get('course_id')
     course_title = request.form.get('title')
+    
+    user_id = 1
 
     if course_id:
+        #print(course_id)
         if Enrollment.objects(user_id=user_id, course_id=course_id):
             flash(f"Oops! You are already registered in this course {course_title}!", "danger")
             return redirect(url_for("courses"))
         else:
-            Enrollment(user_id=user_id, course_id=course_id)
+            #print(f"new enrollment with course id = {course_id}, user_id = {user_id}")
+            Enrollment(user_id=user_id, course_id=course_id).save()
+            # for enrollment in Enrollment.objects.all():
+            #     print(enrollment.course_id, enrollment.user_id)
             flash(f"You are enrolled in {course_title}!", "success")
 
     classes = None
