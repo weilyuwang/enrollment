@@ -85,7 +85,43 @@ def enrollment():
             #     print(enrollment.course_id, enrollment.user_id)
             flash(f"You are enrolled in {course_title}!", "success")
 
-    classes = None
+
+    # create aggregation pipeline to return classes the current user is enrolled in
+    classes = list(User.objects.aggregate(*[
+            {
+                '$lookup': {
+                    'from': 'enrollment', 
+                    'localField': 'user_id', 
+                    'foreignField': 'user_id', 
+                    'as': 'r1'
+                }
+            }, {
+                '$unwind': {
+                    'path': '$r1', 
+                    'preserveNullAndEmptyArrays': False
+                }
+            }, {
+                '$lookup': {
+                    'from': 'course', 
+                    'localField': 'r1.course_id', 
+                    'foreignField': 'course_id', 
+                    'as': 'r2'
+                }
+            }, {
+                '$unwind': {
+                    'path': '$r2', 
+                    'preserveNullAndEmptyArrays': False
+                }
+            }, {
+                '$match': {
+                    'user_id': user_id
+                }
+            }, {
+                '$sort': {
+                    'course_id': 1
+                }
+            }
+        ]))
 
     term = request.form.get('term')
 
