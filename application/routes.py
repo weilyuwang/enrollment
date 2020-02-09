@@ -1,5 +1,6 @@
 from application import app, db
 from flask import render_template, request, json, Response
+from application.models import User, Course, Enrollment
 
 courseData = [
     {"courseID":"1111","title":"PHP 101","description":"Intro to PHP","credits":3,"term":"Fall, Spring"}, 
@@ -50,15 +51,7 @@ def api(idx=None):
         jdata = courseData[int(idx)]
 
     return Response(json.dumps(jdata), mimetype="application/json")
-
-
-class User(db.Document):
-    user_id     = db.IntField(unique=True)
-    first_name  = db.StringField(max_length=50)
-    last_name   = db.StringField(max_length=50)
-    email       = db.StringField(max_length=30)
-    password    = db.StringField(max_length=30)
-
+    
 
 @app.route("/user")
 def user():
