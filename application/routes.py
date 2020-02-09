@@ -3,13 +3,13 @@ from flask import render_template, request, json, Response, redirect, flash, url
 from application.models import User, Course, Enrollment
 from application.forms import LoginForm, RegisterForm
 
-# courseData = [
-#     {"courseID":"1111","title":"PHP 101","description":"Intro to PHP","credits":3,"term":"Fall, Spring"}, 
-#     {"courseID":"2222","title":"Java 1","description":"Intro to Java Programming","credits":4,"term":"Spring"}, 
-#     {"courseID":"3333","title":"Adv PHP 201","description":"Advanced PHP Programming","credits":3,"term":"Fall"}, 
-#     {"courseID":"4444","title":"Angular 1","description":"Intro to Angular","credits":3,"term":"Fall, Spring"}, 
-#     {"courseID":"5555","title":"Java 2","description":"Advanced Java Programming","credits":4,"term":"Fall"}
-# ]
+courseData = [
+    {"courseID":"1111","title":"PHP 101","description":"Intro to PHP","credits":3,"term":"Fall, Spring"}, 
+    {"courseID":"2222","title":"Java 1","description":"Intro to Java Programming","credits":4,"term":"Spring"}, 
+    {"courseID":"3333","title":"Adv PHP 201","description":"Advanced PHP Programming","credits":3,"term":"Fall"}, 
+    {"courseID":"4444","title":"Angular 1","description":"Intro to Angular","credits":3,"term":"Fall, Spring"}, 
+    {"courseID":"5555","title":"Java 2","description":"Advanced Java Programming","credits":4,"term":"Fall"}
+]
 
 @app.route("/")
 @app.route("/index")
@@ -68,11 +68,22 @@ def register():
 
 @app.route("/enrollment", methods=["GET", "POST"])
 def enrollment():
-    id = request.form.get('courseID')
-    title = request.form.get('title')
-    term = request.form['term']
-    # above is the same as using term = request.form.get('term)
-    return render_template("enrollment.html", enrollment=True, data={"id": id, "title": title, "term": term})
+    course_id = request.form.get('course_id')
+    course_title = request.form.get('title')
+
+    if course_id:
+        if Enrollment.objects(user_id=user_id, course_id=course_id):
+            flash(f"Oops! You are already registered in this course {course_title}!", "danger")
+            return redirect(url_for("courses"))
+        else:
+            Enrollment(user_id=user_id, course_id=course_id)
+            flash(f"You are enrolled in {course_title}!", "success")
+
+    classes = None
+
+    term = request.form.get('term')
+
+    return render_template("enrollment.html", enrollment=True, title="Enrollment", classes=classes)
 
 
 @app.route("/api/")
